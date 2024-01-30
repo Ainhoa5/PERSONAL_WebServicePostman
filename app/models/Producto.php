@@ -1,14 +1,14 @@
 <?php
-// /app/models/Categoria.php
-class Categoria extends Conectar
+// /app/models/Producto.php
+class Producto extends Conectar
 {
-    public function get_categoria()
+    public function get_productos()
     {
         $conectar = parent::conexion();
         parent::set_name();
 
         // SQL query string
-        $query = "SELECT * FROM tm_categoria WHERE est=1";
+        $query = "SELECT * FROM tm_producto";
 
         // Preparing the query
         $stmt = $conectar->prepare($query);
@@ -20,17 +20,17 @@ class Categoria extends Conectar
         return $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function get_categoria_x_id($cat_id)
+    public function get_producto_by_id($pro_id)
     {
         $conectar = parent::conexion();
         parent::set_name();
 
         // SQL query string
-        $query = "SELECT * FROM tm_categoria WHERE est=1 AND cat_id=?";
+        $query = "SELECT * FROM tm_producto WHERE pro_id = ?";
 
         // Preparing the query
         $stmt = $conectar->prepare($query);
-        $stmt->bindValue(1, $cat_id);
+        $stmt->bindValue(1, $pro_id);
 
         // Executing the statement
         $stmt->execute();
@@ -39,61 +39,62 @@ class Categoria extends Conectar
         return $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function insert_categoria($cat_nom, $cat_obs)
+    public function insert_producto($pro_nom, $pro_desc, $cat_id)
     {
         $conectar = parent::conexion();
         parent::set_name();
 
         // SQL query string
-        $query = "INSERT INTO tm_categoria (cat_id, cat_nom, cat_obs, est) VALUES (NULL, ?, ?, '1');";
+        $query = "INSERT INTO tm_producto (pro_id, pro_nom, pro_desc, cat_id) VALUES (NULL, ?, ?, ?);";
 
         // Preparing the query
         $stmt = $conectar->prepare($query);
-        $stmt->bindValue(1, $cat_nom);
-        $stmt->bindValue(2, $cat_obs);
-
-        // Executing the statement
-        $stmt->execute();
-    }
-    public function update_categoria($cat_id, $cat_nom, $cat_obs)
-    {
-        $conectar = parent::conexion();
-        parent::set_name();
-
-        // SQL query string
-        $query = "UPDATE tm_categoria SET
-        cat_nom = ?,
-        cat_obs = ?
-        WHERE
-        cat_id = ?
-        ";
-
-        // Preparing the query
-        $stmt = $conectar->prepare($query);
-        $stmt->bindValue(1, $cat_nom);
-        $stmt->bindValue(2, $cat_obs);
+        $stmt->bindValue(1, $pro_nom);
+        $stmt->bindValue(2, $pro_desc);
         $stmt->bindValue(3, $cat_id);
 
         // Executing the statement
         $stmt->execute();
     }
-    public function delete_categoria($cat_id)
+
+    public function update_producto($pro_id, $pro_nom, $pro_desc)
     {
         $conectar = parent::conexion();
         parent::set_name();
 
         // SQL query string
-        $query = "UPDATE tm_categoria SET
-        est = '0'
+        $query = "UPDATE tm_producto SET
+        pro_nom = ?,
+        pro_desc = ?,
         WHERE
-        cat_id = ?
+        pro_id = ?
         ";
 
         // Preparing the query
         $stmt = $conectar->prepare($query);
-        $stmt->bindValue(1, $cat_id);
+        $stmt->bindValue(1, $pro_nom);
+        $stmt->bindValue(2, $pro_desc);
+        $stmt->bindValue(3, $pro_id);
 
         // Executing the statement
         $stmt->execute();
     }
+
+    public function delete_producto($pro_id)
+    {
+        $conectar = parent::conexion();
+        parent::set_name();
+
+        // SQL query string
+        $query = "DELETE FROM tm_producto WHERE pro_id = ?";
+
+        // Preparing the query
+        $stmt = $conectar->prepare($query);
+        $stmt->bindValue(1, $pro_id);
+
+        // Executing the statement
+        $stmt->execute();
+    }
+
 }
+

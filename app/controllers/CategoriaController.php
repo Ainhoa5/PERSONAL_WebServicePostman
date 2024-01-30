@@ -1,39 +1,62 @@
 <?php
-header('Content-Type: application/json');
+// /app/controllers/CategoriaController.php
+require_once("app/models/Categoria.php");
+require_once("config/conexion.php");
 
-require_once("../../config/conexion.php");
-require_once("../models/Categoria.php");
+class CategoriaController {
+    private $categoriaModel;
 
-try {
-    $categoria = new Categoria();
-    $body = json_decode(file_get_contents("php://input"), true);
-    $op = $_GET["op"] ?? '';
-
-    switch ($op) {
-        case "GetAll":
-            echo json_encode($categoria->get_categoria());
-            break;
-        case "GetId":
-            // Validar que cat_id esté presente
-            echo json_encode($categoria->get_categoria_x_id($body["cat_id"]));
-            break;
-        case "Insert":
-            $categoria->insert_categoria($body["cat_nom"], $body["cat_obs"]);
-            echo "Insert Correcto";
-            break;
-        case "Update":
-            $categoria->update_categoria($body["cat_id"], $body["cat_nom"], $body["cat_obs"]);
-            echo "Update Correcto";
-            break;
-        case "Delete":
-            $categoria->delete_categoria($body["cat_id"]);
-            echo "Delete Correcto";
-            break;
-        default:
-            http_response_code(400);
-            echo json_encode(["error" => "Operación no válida"]);
+    public function __construct() {
+        $this->categoriaModel = new Categoria();
     }
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getMessage()]);
+
+    // Obtener todas las categorías
+    public function getAll() {
+        $categorias = $this->categoriaModel->get_categoria();
+        echo json_encode($categorias);
+    }
+
+    // Obtener una categoría por ID
+    public function getById($request) {
+        if (!isset($request['cat_id'])) {
+            echo json_encode(["error" => "ID de categoría no proporcionado"]);
+            return;
+        }
+
+        $categoria = $this->categoriaModel->get_categoria_x_id($request['cat_id']);
+        echo json_encode($categoria);
+    }
+
+    // Insertar una nueva categoría
+    public function insert($request) {
+        if (!isset($request['cat_nom']) || !isset($request['cat_obs'])) {
+            echo json_encode(["error" => "Datos incompletos"]);
+            return;
+        }
+
+        $this->categoriaModel->insert_categoria($request['cat_nom'], $request['cat_obs']);
+        echo json_encode(["success" => "Categoría insertada correctamente"]);
+    }
+
+    // Actualizar una categoría
+    public function update($request) {
+        if (!isset($request['cat_id']) || !isset($request['cat_nom']) || !isset($request['cat_obs'])) {
+            echo json_encode(["error" => "Datos incompletos"]);
+            return;
+        }
+
+        $this->categoriaModel->update_categoria($request['cat_id'], $request['cat_nom'], $request['cat_obs']);
+        echo json_encode(["success" => "Categoría actualizada correctamente"]);
+    }
+
+    // Eliminar una categoría
+    public function delete($request) {
+        if (!isset($request['cat_id'])) {
+            echo json_encode(["error" => "ID de categoría no proporcionado"]);
+            return;
+        }
+
+        $this->categoriaModel->delete_categoria($request['cat_id']);
+        echo json_encode(["success" => "Categoría eliminada correctamente"]);
+    }
 }

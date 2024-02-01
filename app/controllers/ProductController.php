@@ -1,22 +1,30 @@
 <?php
 // /app/controllers/ProductController.php
-require_once("app/models/Producto.php");
 
-class ProductController {
+use Config\Functions;
+
+require_once("app/models/Producto.php");
+require_once("config/functions.php");
+
+class ProductController
+{
     private $productoModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->productoModel = new Producto();
     }
 
     // Obtener todos los productos
-    public function getAll() {
+    public function getAll()
+    {
         $productos = $this->productoModel->get_productos();
         echo json_encode($productos);
     }
 
     // Obtener un producto por ID
-    public function getById($request) {
+    public function getById($request)
+    {
         if (!isset($request['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);
             return;
@@ -27,18 +35,24 @@ class ProductController {
     }
 
     // Insertar un nuevo producto
-    public function insert($request) {
-        if (!isset($request['pro_nom']) || !isset($request['pro_desc']) || !isset($request['cat_id'])) {
+    public function insert()
+    {
+        // Utilizar directamente $_POST para acceder a los datos enviados
+        if (!isset($_POST['pro_nom']) || !isset($_POST['pro_desc']) || !isset($_POST['cat_id'])) {
             echo json_encode(["error" => "Datos incompletos"]);
             return;
         }
 
-        $this->productoModel->insert_producto($request['pro_nom'], $request['pro_desc'], $request['cat_id']);
+        // Llama al modelo para insertar el producto
+        $this->productoModel->insert_producto($_POST['pro_nom'], $_POST['pro_desc'], $_POST['cat_id']);
         echo json_encode(["success" => "Producto insertado correctamente"]);
     }
 
+
+
     // Actualizar un producto
-    public function update($request) {
+    public function update($request)
+    {
         if (!isset($request['pro_id']) || !isset($request['pro_nom']) || !isset($request['pro_desc'])) {
             echo json_encode(["error" => "Datos incompletos"]);
             return;
@@ -49,7 +63,8 @@ class ProductController {
     }
 
     // Eliminar un producto
-    public function delete($request) {
+    public function delete($request)
+    {
         if (!isset($request['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);
             return;
@@ -59,4 +74,3 @@ class ProductController {
         echo json_encode(["success" => "Producto eliminado correctamente"]);
     }
 }
-

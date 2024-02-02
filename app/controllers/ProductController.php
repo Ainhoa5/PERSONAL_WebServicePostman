@@ -65,12 +65,12 @@ class ProductController
     // Eliminar un producto
     public function delete($request)
     {
-        if (!isset($request['pro_id'])) {
+        if (!isset($_POST['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);
             return;
         }
 
-        $this->productoModel->delete_producto($request['pro_id']);
+        $this->productoModel->delete_producto($_POST['pro_id']);
         echo json_encode(["success" => "Producto eliminado correctamente"]);
     }
 }

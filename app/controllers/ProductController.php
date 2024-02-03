@@ -37,7 +37,6 @@ class ProductController
     // Insertar un nuevo producto
     public function insert()
     {
-        Functions::debug($_POST);
         // Utilizar directamente $_POST para acceder a los datos enviados
         if (!isset($_POST['pro_nom']) || !isset($_POST['pro_desc']) || !isset($_POST['cat_id'])) {
             echo json_encode(["error" => "Datos incompletos"]);

@@ -57,7 +57,7 @@ class Producto extends Conectar
         $stmt->execute();
     }
 
-    public function update_producto($pro_id, $pro_nom, $pro_desc)
+    public function update_producto($pro_id, $pro_nom, $pro_desc, $cat_id)
     {
         $conectar = parent::conexion();
         parent::set_name();
@@ -66,6 +66,7 @@ class Producto extends Conectar
         $query = "UPDATE tm_producto SET
         pro_nom = ?,
         pro_desc = ?,
+        cat_id = ?
         WHERE
         pro_id = ?
         ";
@@ -74,7 +75,8 @@ class Producto extends Conectar
         $stmt = $conectar->prepare($query);
         $stmt->bindValue(1, $pro_nom);
         $stmt->bindValue(2, $pro_desc);
-        $stmt->bindValue(3, $pro_id);
+        $stmt->bindValue(3, $cat_id);
+        $stmt->bindValue(4, $pro_id);
 
         // Executing the statement
         $stmt->execute();

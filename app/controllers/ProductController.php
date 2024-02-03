@@ -25,18 +25,19 @@ class ProductController
     // Obtener un producto por ID
     public function getById($request)
     {
-        if (!isset($request['pro_id'])) {
+        if (!isset($_POST['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);
             return;
         }
-        // http://localhost/Projects/PERSONAL_WebServicePostman/index.php?op=getCategoriaById&cat_id=1
-        $producto = $this->productoModel->get_producto_by_id($request['pro_id']);
+        
+        $producto = $this->productoModel->get_producto_by_id($_POST['pro_id']);
         echo json_encode($producto);
     }
 
     // Insertar un nuevo producto
     public function insert()
     {
+        Functions::debug($_POST);
         // Utilizar directamente $_POST para acceder a los datos enviados
         if (!isset($_POST['pro_nom']) || !isset($_POST['pro_desc']) || !isset($_POST['cat_id'])) {
             echo json_encode(["error" => "Datos incompletos"]);
@@ -53,17 +54,17 @@ class ProductController
     // Actualizar un producto
     public function update($request)
     {
-        if (!isset($request['pro_id']) || !isset($request['pro_nom']) || !isset($request['pro_desc'])) {
+        if (!isset($_POST['pro_id']) || !isset($_POST['pro_nom']) || !isset($_POST['pro_desc']) ||  !isset($_POST['cat_id']) ) {
             echo json_encode(["error" => "Datos incompletos"]);
             return;
         }
 
-        $this->productoModel->update_producto($request['pro_id'], $request['pro_nom'], $request['pro_desc']);
+        $this->productoModel->update_producto($_POST['pro_id'], $_POST['pro_nom'], $_POST['pro_desc'], $_POST['cat_id']);
         echo json_encode(["success" => "Producto actualizado correctamente"]);
     }
 
     // Eliminar un producto
-    public function delete($request)
+    public function delete()
     {
         if (!isset($_POST['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);

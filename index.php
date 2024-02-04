@@ -11,6 +11,9 @@ $router = new Router();
 $categoriaController = new CategoriaController();
 $router->register("getAllCategorias", [$categoriaController, "getAll"]);
 $router->register("getCategoriaById", [$categoriaController, "getById"]);
+$router->register("insertCategoria", [$categoriaController, "insert"]);
+$router->register("updateCategoria", [$categoriaController, "update"]);
+$router->register("deleteCategoria", [$categoriaController, "delete"]);
 // Registra otros métodos como sea necesario
 
 // Configuración de rutas para productos

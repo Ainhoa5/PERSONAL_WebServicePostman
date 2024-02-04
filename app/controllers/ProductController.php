@@ -23,7 +23,7 @@ class ProductController
     }
 
     // Obtener un producto por ID
-    public function getById($request)
+    public function getById()
     {
         if (!isset($_POST['pro_id'])) {
             echo json_encode(["error" => "ID de producto no proporcionado"]);
@@ -51,7 +51,7 @@ class ProductController
 
 
     // Actualizar un producto
-    public function update($request)
+    public function update()
     {
         if (!isset($_POST['pro_id']) || !isset($_POST['pro_nom']) || !isset($_POST['pro_desc']) ||  !isset($_POST['cat_id']) ) {
             echo json_encode(["error" => "Datos incompletos"]);

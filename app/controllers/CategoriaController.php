@@ -17,7 +17,7 @@ class CategoriaController {
     }
 
     // Obtener una categoría por ID
-    public function getById($request) {
+    public function getById() {
         if (!isset($_POST['cat_id'])) {
             echo json_encode(["error" => "ID de categoría no proporcionado"]);
             return;
@@ -28,7 +28,7 @@ class CategoriaController {
     }
 
     // Insertar una nueva categoría
-    public function insert($request) {
+    public function insert() {
         if (!isset($_POST['cat_nom']) || !isset($_POST['cat_obs'])) {
             echo json_encode(["error" => "Datos incompletos"]);
             return;
@@ -39,7 +39,7 @@ class CategoriaController {
     }
 
     // Actualizar una categoría
-    public function update($request) {
+    public function update() {
         if (!isset($_POST['cat_id']) || !isset($_POST['cat_nom']) || !isset($_POST['cat_obs'])) {
             echo json_encode(["error" => "Datos incompletos"]);
             return;
@@ -50,7 +50,7 @@ class CategoriaController {
     }
 
     // Eliminar una categoría
-    public function delete($request) {
+    public function delete() {
         if (!isset($_POST['cat_id'])) {
             echo json_encode(["error" => "ID de categoría no proporcionado"]);
             return;
